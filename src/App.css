@@ -1,0 +1,543 @@
+.app-root {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 2rem;
+  box-sizing: border-box;
+}
+
+.app-header {
+  text-align: left;
+}
+
+.app-header h1 {
+  margin: 0 0 0.25rem;
+  font-size: 1.8rem;
+}
+
+.app-tagline {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.app-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+.palette {
+  background: #fafafa;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04), 0 10px 25px rgba(15, 23, 42, 0.08);
+}
+
+.palette-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+}
+
+.palette-hint {
+  margin: 0 0 0.75rem;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.palette-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.palette-button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d4d4d8;
+  background: #fff;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.palette-button:hover {
+  background: #f4f4ff;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 1px rgba(79, 70, 229, 0.2);
+}
+
+.palette-button.active {
+  background: #eef2ff;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 1px rgba(79, 70, 229, 0.45);
+}
+
+.palette-button[draggable="true"] {
+  cursor: grab;
+}
+
+.palette-button[draggable="true"]:active {
+  cursor: grabbing;
+}
+
+.breadboard-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.breadboard {
+  position: relative;
+  width: 100%;
+  padding: 1.25rem 1rem;
+  border-radius: 1rem;
+  background: radial-gradient(circle at top left, #f8f0ac, #dfdeac);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.15);
+  overflow: hidden; 
+}
+
+.breadboard-rail {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6b7280;
+}
+
+.breadboard-rail-top {
+  margin-bottom: 0.75rem;
+}
+
+.breadboard-rail-bottom {
+  margin-top: 0.75rem;
+}
+
+.rail-line {
+  flex: 1;
+  height: 2px;
+  border-radius: 999px;
+}
+
+.rail-line-positive {
+  background: linear-gradient(90deg, #ef4444, #fb7185);
+}
+
+.rail-line-negative {
+  background: linear-gradient(90deg, #3b82f6, #22d3ee);
+}
+
+.rail-label {
+  font-weight: 600;
+}
+
+.rail-label-positive {
+  color: #b91c1c;
+}
+
+.rail-label-negative {
+  color: #1d4ed8;
+}
+
+.breadboard-grid {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.breadboard-row {
+  display: grid;
+  grid-template-columns: repeat(24, 1fr);
+}
+
+.breadboard-cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+}
+
+/* Bigger holes for easier clicking */
+.breadboard-hole {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 30% 30%, #d4d4d8, #6b7280);
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.25);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.breadboard-hole-with-node {
+  width: 14px;
+  height: 14px;
+  background: radial-gradient(circle at 30% 30%, #818cf8, #4f46e5);
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.3);
+  cursor: pointer;
+  position: relative;
+  z-index: 20;
+}
+
+.breadboard-hole-with-node:hover {
+  transform: scale(1.3);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.5);
+  z-index: 25;
+}
+
+.breadboard-hole-selected {
+  width: 14px;
+  height: 14px;
+  background: radial-gradient(circle at 30% 30%, #4ade80, #22c55e);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.6);
+  animation: pulse-node 1s ease-in-out infinite;
+  position: relative;
+  z-index: 20;
+}
+
+@keyframes pulse-node {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.6); }
+  50% { box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.3); }
+}
+
+.breadboard-components {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Unified SVG layer for wires and leads */
+.breadboard-svg-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Bigger wires for easier clicking */
+.breadboard-wire {
+  stroke: #22c55e;
+  stroke-width: 0.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Wire hitbox for easier clicking */
+.breadboard-wire-hitbox {
+  stroke: transparent;
+  stroke-width: 0.6;
+  stroke-linecap: round;
+  cursor: pointer;
+  pointer-events: stroke;
+}
+
+.breadboard-wire-hitbox:hover + .breadboard-wire {
+  stroke: #ef4444;
+  filter: drop-shadow(0 0 2px rgba(239, 68, 68, 0.5));
+}
+
+.wire-group {
+  pointer-events: auto;
+}
+
+/* ===========================================
+   STANDARDIZED PIN SYSTEM
+   =========================================== */
+
+/* Silver bottom bar connecting the two leads */
+.pin-bottom-bar {
+  stroke: #9ca3af;
+  stroke-width: 0.18;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0.02px 0.02px rgba(0,0,0,0.3));
+}
+
+/* Vertical leads dropping to terminals */
+.pin-lead {
+  stroke: #6b7280;
+  stroke-width: 0.1;
+  stroke-linecap: round;
+}
+
+/* Colored leads for battery */
+.pin-lead-minus {
+  stroke: #3b82f6;
+}
+
+.pin-lead-plus {
+  stroke: #ef4444;
+}
+
+/* Debug pin labels */
+.pin-label {
+  font-size: 0.35px;
+  fill: #374151;
+  text-anchor: middle;
+  font-family: system-ui, sans-serif;
+  font-weight: 500;
+}
+
+/* Debug pin styling */
+.debug-pin {
+  opacity: 0.85;
+}
+
+.debug-pin .pin-bottom-bar {
+  stroke: #d1d5db;
+  stroke-width: 0.16;
+}
+
+.debug-pin .pin-lead {
+  stroke: #9ca3af;
+  stroke-width: 0.08;
+}
+
+/* Components - positioned via left/top percentages */
+.component {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+  cursor: grab;
+  user-select: none;
+  z-index: 10;
+}
+
+.component.dragging {
+  cursor: grabbing;
+  opacity: 0.9;
+}
+
+/* Battery body */
+.battery-body {
+  min-width: 80px;
+  padding: 0.35rem 0.5rem;
+  border-radius: 0.45rem;
+  background: linear-gradient(135deg, #111827, #4b5563);
+  color: #f9fafb;
+  font-size: 0.7rem;
+  box-shadow: 0 6px 12px rgba(15, 23, 42, 0.4);
+}
+
+.battery-label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.battery-terminals {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+}
+
+.battery-terminal {
+  width: 1.2rem;
+  text-align: center;
+  padding: 0.05rem 0.1rem;
+  border-radius: 0.25rem;
+  background: #020617;
+}
+
+.battery-terminal-minus {
+  border: 1px solid #3b82f6;
+}
+
+.battery-terminal-plus {
+  border: 1px solid #ef4444;
+}
+
+/* Bulb glass */
+.bulb-glass {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  border: 2px solid #d1d5db;
+  background: radial-gradient(circle at 30% 20%, #e5e7eb, #d1d5db);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.2);
+}
+
+.bulb-glass-on {
+  border-color: #facc15;
+  background: radial-gradient(circle at 30% 20%, #fef9c3, #facc15);
+  box-shadow: 0 0 25px rgba(250, 204, 21, 0.9);
+}
+
+.bulb-filament {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  border: 2px solid #a1a1aa;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  transform: rotate(45deg);
+}
+
+/* Burned out bulb styles */
+.bulb-glass-burned {
+  border-color: #6b7280;
+  background: radial-gradient(circle at 30% 20%, #9ca3af, #6b7280);
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.3);
+}
+
+.bulb-filament-burned {
+  border-color: #1f2937;
+  opacity: 0.3;
+}
+
+.bulb-burn-spot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #1f2937 30%, #374151 70%, transparent 100%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.8;
+}
+
+/* Potentiometer styles */
+.potentiometer {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  pointer-events: auto;
+  z-index: 2;
+}
+
+.pot-body {
+  width: 36px;
+  height: 24px;
+  background: linear-gradient(to bottom, #4b5563, #374151);
+  border: 2px solid #1f2937;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: transform 0.1s ease;
+}
+
+.pot-body:hover {
+  transform: scale(1.05);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+}
+
+.pot-body:active {
+  transform: scale(0.98);
+}
+
+.pot-knob {
+  width: 14px;
+  height: 14px;
+  background: linear-gradient(135deg, #9ca3af 0%, #6b7280 50%, #4b5563 100%);
+  border-radius: 50%;
+  border: 2px solid #374151;
+  position: relative;
+}
+
+.pot-knob::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 6px;
+  background: #1f2937;
+  transform: translate(-50%, -80%);
+}
+
+.pot-label {
+  font-size: 8px;
+  font-weight: bold;
+  color: #fbbf24;
+  font-family: 'Courier New', monospace;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+  margin-top: 1px;
+}
+
+/* Hover preview styles */
+.hover-preview {
+  opacity: 0.5;
+  pointer-events: none;
+  filter: saturate(0.7);
+}
+
+.hover-pin {
+  opacity: 0.5;
+}
+
+.status-bar {
+  margin-top: 0.5rem;
+  padding: 0.6rem 0.9rem;
+  border-radius: 0.75rem;
+  background: #f4f4f5;
+  border: 1px solid #e4e4e7;
+  font-size: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.status-main {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.status-label {
+  font-weight: 600;
+  color: #52525b;
+}
+
+.status-message {
+  color: #27272a;
+}
+
+.status-current {
+  color: #059669;
+  font-weight: 500;
+  font-family: 'Courier New', monospace;
+}
+
+.status-bar-error { background: #fef2f2; border-color: #fecaca; }
+.status-bar-warning { background: #fefce8; border-color: #fef08a; }
+.status-bar-success { background: #f0fdf4; border-color: #bbf7d0; }
+.status-message-error { color: #dc2626; font-weight: 500; }
+.status-message-warning { color: #ca8a04; }
+.status-message-success { color: #16a34a; }
+
+.status-debug {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  padding-top: 0.3rem;
+  border-top: 1px solid #e4e4e7;
+}
+
+.debug-info {
+  color: #3b82f6;
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  background: #eff6ff;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid #bfdbfe;
+}
